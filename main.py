@@ -3,9 +3,9 @@ import os
 import random
 import string
 import boto3
-from flask import Flask, request
+from bottle import Bottle, request
 
-app = Flask(__name__)
+app = Bottle(__name__)
 client = boto3.client(
     's3',
     region_name=os.environ['AWS_REGION_NAME'],
@@ -25,13 +25,9 @@ def upload_to_s3(byte_stream, file):
     s3_bucket_name = os.environ['S3_BUCKET_NAME']
     hash = _generate_hash()
     filename = _build_upload_filename(file.filename, hash)
-    response = client.upload_fileobj(
-        byte_stream, 
-        s3_bucket_name, 
-        filename)
-    return response
+    client.upload_fileobj(byte_stream, s3_bucket_name, filename)
 
-@app.route('/archive', methods=['POST'])
+@app.route('/archive', method='POST')
 def archive():
     try:
         file = request.files.get('artifact')
