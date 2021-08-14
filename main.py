@@ -31,7 +31,6 @@ def upload_to_s3(byte_stream, file):
 def archive():
     try:
         file = request.files.get('artifact')
-        print(file.__dict__)
         byte_stream = io.BytesIO(file.file.read())
         upload_to_s3(byte_stream, file)
         return '0'
