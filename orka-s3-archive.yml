@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orka-s3-archive
+  labels:
+    app: s3archive
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s3archive
+  template:
+    metadata:
+      labels:
+        app: s3archive
+    spec:
+      containers:
+      - name: orka-s3-archive
+        image: jdvincent/orka-s3-archive:latest
+        ports:
+        - containerPort: 8888
